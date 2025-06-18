@@ -1,19 +1,27 @@
-import express from 'express'
-import loginRoutes from './routes/loginRoutes.js'
-import signupRoutes from './routes/signupRoutes.js'
+import express from 'express';
+import cors from 'cors'; // Import CORS package
+import loginRoutes from './routes/loginRoutes.js';
+import signupRoutes from './routes/signupRoutes.js';
 
-const app = express()
-const PORT = 8000
+const app = express();
+const PORT = 8000;
 
-app.use(express.json())
+// Add CORS middleware before your routes
+app.use(cors({
+  origin: 'http://localhost:5173', // Your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
+}));
 
-app.get('/' , (req,res) => {
-    res.send('CinemaBoxd backend is running!')
-})
+app.use(express.json());
 
-app.use('/api',loginRoutes)
-app.use('/api',signupRoutes)
+app.get('/', (req, res) => {
+  res.send('CinemaBoxd backend is running!');
+});
 
-app.listen(PORT | 8000 , () => {
-    console.log(`Server is running at PORT:${PORT}`)
-})
+app.use('/api', loginRoutes);
+app.use('/api', signupRoutes);
+
+app.listen(PORT, () => { // Removed the bitwise OR (|) operator which was incorrect
+  console.log(`Server is running at PORT:${PORT}`);
+});
