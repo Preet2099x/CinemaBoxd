@@ -285,10 +285,9 @@ const handleGithubLogin = async () => {
               </div>
             </div>
             
-            
             <Button 
               onClick={handleSubmit}
-              className="w-full h-10" 
+              className="w-full h-10 my-3" 
               disabled={isLoading}
             >
               {isLoading ? "SIGNING UP..." : "SIGN UP"}

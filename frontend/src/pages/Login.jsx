@@ -219,7 +219,7 @@ const Login = () => {
             
             <Button 
               onClick={handleSubmit}
-              className="w-full h-10" 
+              className="w-full h-10 my-3" 
               disabled={isLoading}
             >
               {isLoading ? "LOGGING IN..." : "LOGIN"}
