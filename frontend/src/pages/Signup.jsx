@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider, githubProvider } from "@/lib/firebase";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Card,
@@ -9,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -140,16 +143,27 @@ const Signup = () => {
     }
   };
 
-  // Handle social signup (placeholder functions)
-  const handleGoogleSignup = () => {
-    console.log("Google signup clicked");
-    // Implement Google OAuth flow
-  };
+const handleGoogleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    console.log("Google user:", user);
+    // Optionally send user info to your backend
+  } catch (err) {
+    console.error("Google login error:", err);
+  }
+};
 
-  const handleGitHubSignup = () => {
-    console.log("GitHub signup clicked");
-    // Implement GitHub OAuth flow
-  };
+const handleGithubLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, githubProvider);
+    const user = result.user;
+    console.log("GitHub user:", user);
+    // Optionally send user info to your backend
+  } catch (err) {
+    console.error("GitHub login error:", err);
+  }
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground p-4">
@@ -169,7 +183,7 @@ const Signup = () => {
             <Button 
               variant="outline" 
               className="gap-2"
-              onClick={handleGoogleSignup}
+              onClick={handleGoogleLogin}
               disabled={isLoading}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -180,7 +194,7 @@ const Signup = () => {
             <Button 
               variant="outline" 
               className="gap-2"
-              onClick={handleGitHubSignup}
+              onClick={handleGithubLogin}
               disabled={isLoading}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
