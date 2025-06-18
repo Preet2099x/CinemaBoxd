@@ -208,9 +208,8 @@ const handleGithubLogin = async () => {
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-200"></span>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">OR</span>
+              <p className="px-2 text-xs text-muted-foreground">OR</p>
+              <span className="w-full border-t border-gray-200"></span>
             </div>
           </div>
 
@@ -249,40 +248,43 @@ const handleGithubLogin = async () => {
                 <p className="text-sm text-red-600">{errors.email}</p>
               )}
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                className={`h-10 ${errors.password ? 'border-red-500 focus:border-red-500' : ''}`}
-                value={formData.password}
-                onChange={handleInputChange}
-                disabled={isLoading}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-600">{errors.password}</p>
-              )}
+
+            <div className="flex justify-between items-start">
+              <div className="w-[48%] space-y-2"> {/* Left element - starts at start */}
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  className={`h-10 ${errors.password ? 'border-red-500 focus:border-red-500' : ''}`}
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  disabled={isLoading}
+                />
+                {errors.password && (
+                  <p className="text-sm text-red-600">{errors.password}</p>
+                )}
+              </div>
+              
+              <div className="w-[48%] space-y-2"> {/* Right element - ends at end */}
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  className={`h-10 ${errors.confirmPassword ? 'border-red-500 focus:border-red-500' : ''}`}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  disabled={isLoading}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
+              </div>
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                className={`h-10 ${errors.confirmPassword ? 'border-red-500 focus:border-red-500' : ''}`}
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                disabled={isLoading}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
-            </div>
             
             <Button 
               onClick={handleSubmit}

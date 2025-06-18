@@ -175,11 +175,11 @@ const Login = () => {
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-200"></span>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">OR</span>
+              <p className="px-2 text-xs text-muted-foreground">OR</p>
+              <span className="w-full border-t border-gray-200"></span>
             </div>
           </div>
+
 
           {/* Login Form */}
           <div className="space-y-4">
