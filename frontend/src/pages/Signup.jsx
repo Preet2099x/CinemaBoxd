@@ -147,23 +147,75 @@ const handleGoogleLogin = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
-    console.log("Google user:", user);
-    // Optionally send user info to your backend
+
+    const payload = {
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      provider: "google",
+    };
+
+    const response = await fetch("http://localhost:8000/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("OAuth signup failed:", data.message);
+    } else {
+      console.log("OAuth signup successful:", data);
+      // Optionally store user/token
+      localStorage.setItem("authUserId", data.userid);
+    }
+
   } catch (err) {
     console.error("Google login error:", err);
   }
 };
 
+
 const handleGithubLogin = async () => {
   try {
     const result = await signInWithPopup(auth, githubProvider);
     const user = result.user;
-    console.log("GitHub user:", user);
-    // Optionally send user info to your backend
+
+    const payload = {
+      name: user.displayName || "github_user",
+      email: user.email, // May be null if GitHub email is private
+      photoURL: user.photoURL,
+      uid: user.uid,
+      provider: "github",
+    };
+
+    if (!payload.email) {
+      console.error("GitHub email is null — make sure user email is public on GitHub");
+      return;
+    }
+
+    const response = await fetch("http://localhost:8000/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("OAuth signup failed:", data.message);
+    } else {
+      console.log("OAuth signup successful:", data);
+      localStorage.setItem("authUserId", data.userid);
+    }
+
   } catch (err) {
     console.error("GitHub login error:", err);
   }
 };
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background text-foreground p-4">

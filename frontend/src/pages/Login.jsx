@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider, githubProvider } from "@/lib/firebase";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Card,
@@ -116,16 +118,76 @@ const Login = () => {
     }
   };
 
-  // Handle social login (placeholder functions)
-  const handleGoogleLogin = () => {
-    console.log("Google login clicked");
-    // Implement Google OAuth flow
-  };
+const handleGoogleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
 
-  const handleGitHubLogin = () => {
-    console.log("GitHub login clicked");
-    // Implement GitHub OAuth flow
-  };
+    const payload = {
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      provider: "google",
+    };
+
+    const response = await fetch("http://localhost:8000/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("OAuth login/signup failed:", data.message);
+    } else {
+      console.log("OAuth login/signup success:", data);
+      localStorage.setItem("authUserId", data.userid);
+    }
+  } catch (err) {
+    console.error("Google OAuth error:", err);
+  }
+};
+
+
+const handleGithubLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, githubProvider);
+    const user = result.user;
+
+    if (!user.email) {
+      alert("GitHub email not available. Make it public or try another login.");
+      return;
+    }
+
+    const payload = {
+      name: user.displayName || "github_user",
+      email: user.email,
+      photoURL: user.photoURL,
+      uid: user.uid,
+      provider: "github",
+    };
+
+    const response = await fetch("http://localhost:8000/api/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("OAuth login/signup failed:", data.message);
+    } else {
+      console.log("OAuth login/signup success:", data);
+      localStorage.setItem("authUserId", data.userid);
+    }
+  } catch (err) {
+    console.error("GitHub OAuth error:", err);
+  }
+};
+
 
   const handleForgotPassword = () => {
     console.log("Forgot password clicked");
@@ -161,7 +223,7 @@ const Login = () => {
             <Button 
               variant="outline" 
               className="gap-2"
-              onClick={handleGitHubLogin}
+              onClick={handleGithubLogin}
               disabled={isLoading}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

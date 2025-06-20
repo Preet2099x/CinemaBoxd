@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors'; // Import CORS package
 import loginRoutes from './routes/loginRoutes.js';
 import signupRoutes from './routes/signupRoutes.js';
+import authRoutes from './routes/authRoutes.js'
 
 const app = express();
 const PORT = 8000;
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/api', loginRoutes);
 app.use('/api', signupRoutes);
+app.use('/api', authRoutes);
 
 app.listen(PORT, () => { // Removed the bitwise OR (|) operator which was incorrect
   console.log(`Server is running at PORT:${PORT}`);
