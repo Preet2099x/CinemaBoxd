@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -103,8 +105,7 @@ const Login = () => {
         setTimeout(() => {
           setFormData({ email: "", password: "" });
           setIsSuccess(false); // Reset success state after redirect
-          // Here you would typically redirect the user
-          // For example: navigate('/dashboard');
+          navigate("/main"); // Redirect to MainPage
         }, 2000);
         
       } else {
@@ -144,6 +145,7 @@ const handleGoogleLogin = async () => {
     } else {
       console.log("OAuth login/signup success:", data);
       localStorage.setItem("authUserId", data.userid);
+      navigate("/main"); // Redirect to MainPage
     }
   } catch (err) {
     console.error("Google OAuth error:", err);
@@ -182,6 +184,7 @@ const handleGithubLogin = async () => {
     } else {
       console.log("OAuth login/signup success:", data);
       localStorage.setItem("authUserId", data.userid);
+      navigate("/main"); // Redirect to MainPage
     }
   } catch (err) {
     console.error("GitHub OAuth error:", err);

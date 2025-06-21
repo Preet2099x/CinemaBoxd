@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
@@ -25,6 +26,7 @@ const Signup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -128,8 +130,7 @@ const Signup = () => {
         setTimeout(() => {
           setFormData({ username: "", email: "", password: "", confirmPassword: "" });
           setIsSuccess(false); // Reset success state after redirect
-          // Here you would typically redirect the user
-          // For example: navigate('/dashboard');
+          navigate("/main"); // Redirect to MainPage
         }, 2000);
         
       } else {
@@ -170,6 +171,7 @@ const handleGoogleLogin = async () => {
       console.log("OAuth signup successful:", data);
       // Optionally store user/token
       localStorage.setItem("authUserId", data.userid);
+      navigate("/main"); // Redirect to MainPage
     }
 
   } catch (err) {
@@ -209,6 +211,7 @@ const handleGithubLogin = async () => {
     } else {
       console.log("OAuth signup successful:", data);
       localStorage.setItem("authUserId", data.userid);
+      navigate("/main"); // Redirect to MainPage
     }
 
   } catch (err) {
